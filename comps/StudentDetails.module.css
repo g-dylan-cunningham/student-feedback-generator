@@ -1,0 +1,18 @@
+.formColumnContainer {
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;
+}
+.formColumn {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.nameTextInput {
+  padding: 10px 0px;
+}
+
+.nameTextInputWrapper {
+  display: flex;
+  flex-direction: column;
+}

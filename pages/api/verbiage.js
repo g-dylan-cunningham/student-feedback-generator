@@ -9,21 +9,34 @@ export default function handler(req, res) {
 
   const {
     rating,
-    ageGroup,
     category,
-    namePreference, // firstName, lastName, mixed, firstPerson
     studentDetails: {
       firstName,
       lastName,
-      gender
+      gender,
+      ageGroup,
+      namePreference, // firstName, lastName, mixed
+      honorific, // String - Mr. Mrs. Ms Miss, custom
+      voice, // firstPerson, thirdPerson
     }
   } = JSON.parse(body);
+  console.log(
+    rating,
+    category,
+      firstName,
+      lastName,
+      gender,
+      'ageGroup', ageGroup,
+      namePreference,
+      'honorific',honorific,
+      voice
+  )
 
 
   const ss = pronounMap[gender]; // assemble all the pronouns, will add name also later
 
-  const getName = ({gender, firstName, lastName, namePreference}) => {
-    if (namePreference === 'firstPerson') {
+  const getName = ({gender, firstName, lastName, namePreference, voice}) => {
+    if (voice === 'firstPerson') {
       return 'you';
     }
     if (namePreference === 'mixed') {
@@ -33,22 +46,21 @@ export default function handler(req, res) {
     if (firstName && namePreference === 'firstName') {
       return firstName;
     }
-    if (lastName && gender && namePreference === 'lastName') {
-      const salutoryMap = {
-        male: 'Mr.',
-        female: 'Ms',
-      }
-      const salutation = salutoryMap[gender];
-      if (salutation) {
-        return salutation + ' ' + lastName;
-      }
+    if (lastName && namePreference === 'lastName') {
+        let honorificStr;
+        if (honorific) {
+          honorificStr = honorific + ' ';
+        } else {
+          honorificStr = '';
+        }
+        return honorificStr + lastName;
     }
     if (lastName && namePreference === 'lastName') {
       return lastName;
     }
     return 'nameNotConfiguredProperly';
   }
-  ss['name'] = getName({gender, firstName, lastName, namePreference}); // add preferred name to pronouns
+  ss['name'] = getName({gender, firstName, lastName, namePreference, voice}); // add preferred name to pronouns
   
   // console.log(      
   //   'server studentd', ss

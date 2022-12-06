@@ -11,7 +11,8 @@ function getLabelText(value) {
 
 export default function StarRater({
   value,
-  setValue
+  setValue,
+  category
 }) {
   
   const [hover, setHover] = React.useState(-1);
@@ -25,6 +26,7 @@ export default function StarRater({
       }}
     >
       <Rating
+        disabled={!category}
         name="hover-feedback"
         value={value}
         precision={1}

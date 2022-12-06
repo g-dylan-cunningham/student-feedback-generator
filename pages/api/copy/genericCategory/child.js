@@ -1,6 +1,6 @@
 import { cap } from '../../utils';
 
-const teen = {
+const child = {
     1: [
       ({ ss, category}) => `${ss.name} has shown poor skill in ${category}`,
       ({ ss }) => `${cap(ss.pronoun)} did not put in the effort needed to succeed`,
@@ -28,4 +28,4 @@ const teen = {
     ],
 }
 
-export default teen;
+export default child;

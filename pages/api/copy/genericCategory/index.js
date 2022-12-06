@@ -1,9 +1,9 @@
 import adult from './adult';
-import children from './children';
+import child from './child';
 import teen from './teen';
 
 export default {
   adult,
-  children,
+  child,
   teen
 }

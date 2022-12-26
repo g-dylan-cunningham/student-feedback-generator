@@ -12,11 +12,11 @@ const ratingLabels = {
 };
 
 const categories = {
-  listening: 'listening comprehension',
-  verbal: 'verbal production',
-  grammar: 'grammar',
-  writing: 'writing',
-  reading: 'reading'
+  // listening: 'Listening Comprehension',
+  // verbal: 'Verbal Production',
+  // grammar: 'Grammar Formation',
+  // writing: 'Writing Production',
+  // reading: 'Reading Ability'
 }
 
 export {

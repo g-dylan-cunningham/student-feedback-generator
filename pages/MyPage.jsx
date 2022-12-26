@@ -1,65 +1,77 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import SkillBlock from "../comps/SkillBlock/SkillBlock";
 import SsDetails from '../comps/SsDetails/SsDetails';
+import { addSkill as addSkillAction } from '../comps/SkillBlock/reducers/skillListSlice';
+import {
+  selectOrderedSkills,
+  selectCurrentStudentData,
+} from '../selectors';
+
 
 const MyPage = () => {
-  const storedSsDetails = useSelector(state => state.student.details);
-  // const storedSkillList = useSelector(state => state.skill.list);
-  const defaultSkillData = [
-    {
-      key: 0,
-      copy: [],
-    }
-  ]
-  const [ skillData, setSkillData ] = useState(defaultSkillData);
+  const dispatch = useDispatch();
+  const storedSsDetails = useSelector(selectCurrentStudentData);
+  const skillList = useSelector(state => selectOrderedSkills(state));
 
-  const addSkillClickHandler = () => {
-    const totalCurrentSkills = Object.keys(skillData).length;
+
+  /* adds new skill category when user clicks plus icon */
+  const addEmptySkillBlock = ({ skillList }) => {
+    const totalCurrentSkills = skillList.length;
     if (totalCurrentSkills) {
-      const updatedSkillData = skillData.concat(
-        {
-          key: totalCurrentSkills,
-          copy: []
-        }
-      );
-      setSkillData(updatedSkillData);
+      const newEmptySkill = {
+        skillId: `skill${totalCurrentSkills}`,
+        category: '',
+        rating: 5,
+        blockState: {
+          configStep: {
+            submitted: false,
+          },
+          feedbackEditStep: {
+            submitted: false,
+          }
+        },
+        ssId: storedSsDetails.ssId
+      }
+      dispatch(addSkillAction(newEmptySkill));
     }
   }
 
   return (
     <div>
-      <SsDetails />
-      {
-        (storedSsDetails.firstName || storedSsDetails.lastName) && storedSsDetails.gender
-        && skillData.map((skill, i) => {
-          // console.log('skill mapping', skill)
-          return (
-          <div key={i}>
-            <SkillBlock
-              studentDetails={storedSsDetails}
-              skillIter={i}
-              position={i}
-              skillData={skillData}
-              setSkillData={setSkillData}
-            />
-      
-          </div>
-        )})
-      }
-      <hr />
-      <div>
-        <Button
-          onClick={() => addSkillClickHandler(true)}
-        >
-          <AddIcon />
-        </Button>
-      </div>
+      {/* <SsIndexContext.Provider value={SsIndexContext}> */}
+        <SsDetails />
+
+        {
+          (storedSsDetails.firstName || storedSsDetails.lastName) && storedSsDetails.ageGroup
+          && skillList.map((skill, i) => {
+            // console.log('skill mapping', skill)
+            return (
+            <div key={i}>
+              <SkillBlock
+                studentDetails={storedSsDetails}
+                skillIter={i}
+                skillList={skillList}
+              />
+        
+            </div>
+          )})
+        }
+
+        <hr style={{ margin: "20px" }}/>
+        
+        <div>
+          <Button
+            onClick={() => addEmptySkillBlock({ skillList })}
+          >
+            <AddIcon />
+          </Button>
+        </div>
+      {/* </SsIndexContext.Provider> */}
     </div>
-    // </div>
   );
 }
  

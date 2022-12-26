@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { uuid } from 'uuidv4';
 import { pronounMap } from './config';
 import genericCopy from './copy/genericCategory';
 
@@ -40,7 +41,7 @@ export default function handler(req, res) {
       return 'you';
     }
     if (namePreference === 'mixed') {
-      const oneOrZero = (Math.random()>0.5)? 1 : 0;
+      const oneOrZero = (Math.random()>0.6)? 1 : 0;
       namePreference = ['firstName', 'lastName'][oneOrZero]
     }
     if (firstName && namePreference === 'firstName') {
@@ -77,8 +78,13 @@ export default function handler(req, res) {
   
   const arr = genericCopy[ageGroup][rating];
 
-  const response = arr.map((getSentence, i) => {
-    return { iter: i, sentence: getSentence(params)};
+  const response = arr.map((getSentence, serverIter) => { // response is an array of functions
+    return {
+      serverIter,
+      sentence: getSentence(params),
+      commentId: uuid(),
+      isVisible: serverIter < 5,
+    };
   })
 
 

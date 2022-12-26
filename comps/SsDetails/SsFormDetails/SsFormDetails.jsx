@@ -12,24 +12,30 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import styles from '../StudentDetails.module.css';
 import { Typography } from '@mui/material';
-import { update } from '../../../app/reducers/studentDetailsSlice';
+import { updateStudent } from '../../../comps/SsDetails/reducers/studentDetailsSlice';
+import {
+  selectCurrentStudentData,
+  // selectCurrentStudent,
+} from '../../../selectors';
+import {
+  deleteStudentById,
+  toggleSsConfigState,
+} from '../../../utils';
+import {
+  // toggleSsDetailsEditMode,
+} from '../../../app/appSlice';
 import GenderSelector from './GenderSelector';
 import AgeSelector from './AgeSelector';
 import VoiceSelector from './VoiceSelector';
 
 const SsFormDetails = ({
-  // setStudentDetails,
-  // studentDetails,
-  toggleSetIsEditMode
 }) => {
   const dispatch = useDispatch();
-  const storedSsDetails = useSelector(state => state.student.details);
-  const [nameFields, setNameFields] = useState({
+  const storedSsDetails = useSelector(selectCurrentStudentData);
+  const [nameFields, setNameFields] = useState({ // used to derive if button is disabled
     firstName: storedSsDetails && storedSsDetails.firstName,
     lastName: storedSsDetails && storedSsDetails.lastName
   });
-  // const [genderField, setGenderField] = useState('female');
-
   const handleSetNameFields = (e) => {
     setNameFields({...nameFields, ...{ [e.target.name]: e.target.value}})
   }
@@ -39,24 +45,27 @@ const SsFormDetails = ({
   const [namePref, setNamePref] = useState({ namePreference: '', voice: '', honorific: '' });
 
   const handleSubmit = (event) => {
-    console.log('submitting')
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const { namePreference, voice, honorific } = namePref;
-
-    dispatch(update({
+    dispatch(updateStudent({
       firstName: formData.get('firstName'),
       lastName: formData.get('lastName'),
       gender: formData.get('gender'), // male female other
       ageGroup: formData.get('ageGroup'), // child, teen, adult
       namePreference, // firstName, lastName, mixed
       voice, // firstPerson, thirdPerson
-      honorific  // Mr. Ms etc
-    }))
+      honorific,  // Mr. Ms etc
+      ssId: storedSsDetails.ssId
+    }));
 
     // setStudentDetails(storedObj);
-    toggleSetIsEditMode();
+    dispatch(toggleSsConfigState());
   };
+
+  const handleDeleteButtonClick = () => {
+    dispatch(deleteStudentById({ssId: storedSsDetails.ssId}))
+  }
 
   return (
     <div
@@ -126,6 +135,7 @@ const SsFormDetails = ({
                   <Grid item xs={12} md={6}>
                     <VoiceSelector
                       namePref={namePref}
+                      nameFields={nameFields}
                       setNamePref={setNamePref}
                       storedSsDetails={storedSsDetails}
                     />
@@ -133,14 +143,20 @@ const SsFormDetails = ({
                 </Grid>
               </Grid>
               <Grid item xs={12} md={2}>
-                <Stack spacing={2} direction="row" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>
+                <Stack
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-end"
+                  spacing={2}
+                  sx={{ width: 'auto', height: 'auto' }}
+                >
+                  <Button
+                      variant="outlined"
+                      onClick={handleDeleteButtonClick}
+                      disabled={isDisabled}
+                    >Delete</Button>
                   <Button
                     variant="contained"
-                    sx={{
-                      position: 'absolute',
-                      bottom: '0px',
-                      right: '0px',
-                    }}
                     type="submit"
                     disabled={isDisabled}
                   >Confirm</Button>

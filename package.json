@@ -21,9 +21,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
+    "react-resizable": "^3.0.4",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "jshint": "^2.13.6",
     "typescript": "^4.9.3"
   }
 }

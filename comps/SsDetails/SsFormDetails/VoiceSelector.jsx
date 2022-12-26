@@ -12,15 +12,12 @@ import {
   FormLabel,
   FormGroup,
 } from '@mui/material';
-// import { update } from '../../../app/reducers/studentDetailsSlice';
-
-
-
 
 const VoiceSelector = ({
   namePref,
   setNamePref,
-  storedSsDetails = {}
+  storedSsDetails = {},
+  nameFields,
 }) => {
 
   const { // populate forms with redux values if they exist
@@ -105,15 +102,17 @@ const VoiceSelector = ({
               <FormControlLabel control={
                 <Checkbox
                   value="firstName"
-                  checked={firstOrLastName.firstName}
+                  checked={!!firstOrLastName.firstName && !!nameFields.firstName}
                   name="firstName"
+                  disabled={!nameFields.firstName}
                 />
               } label="First Name" />
               <FormControlLabel control={
                 <Checkbox
                   value="lastName"
                   name="lastName"
-                  checked={firstOrLastName.lastName}
+                  checked={!!firstOrLastName.lastName && !!nameFields.lastName}
+                  disabled={!nameFields.lastName}
                 />
               } label="Last name" />
               {

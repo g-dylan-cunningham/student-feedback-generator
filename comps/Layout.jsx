@@ -9,7 +9,9 @@ const Layout = ({ children }) => {
     <div>
       <nav>
         <span><Link href='/'>Home</Link>     </span>
-        <span><Link href='/MyPage'>MyPage</Link></span>
+        <span><Link href='/MyPage'>MyPage</Link>     </span>
+        <span><Link href='/Test'>Test</Link></span>
+
       </nav>
       <CssBaseline />
       <Container maxWidth="xl">

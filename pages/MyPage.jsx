@@ -1,8 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
-import { useState } from 'react';
+import Link from 'next/link';
+import {
+  Tooltip,
+  IconButton,
+  Grid,
+  Button,
+} from '@mui/material';
+import {
+  Add as AddIcon,
+} from '@mui/icons-material';
 import SkillBlock from "../comps/SkillBlock/SkillBlock";
 import SsDetails from '../comps/SsDetails/SsDetails';
 import { addSkill as addSkillAction } from '../comps/SkillBlock/reducers/skillListSlice';
@@ -42,35 +49,54 @@ const MyPage = () => {
 
   return (
     <div>
-      {/* <SsIndexContext.Provider value={SsIndexContext}> */}
-        <SsDetails />
+      <SsDetails />
 
-        {
-          (storedSsDetails.firstName || storedSsDetails.lastName) && storedSsDetails.ageGroup
-          && skillList.map((skill, i) => {
-            // console.log('skill mapping', skill)
-            return (
-            <div key={i}>
-              <SkillBlock
-                studentDetails={storedSsDetails}
-                skillIter={i}
-                skillList={skillList}
-              />
-        
-            </div>
-          )})
-        }
+      {
+        (storedSsDetails.firstName || storedSsDetails.lastName) && storedSsDetails.ageGroup
+        && skillList.map((skill, i) => {
+          // console.log('skill mapping', skill)
+          return (
+          <div key={i}>
+            <SkillBlock
+              studentDetails={storedSsDetails}
+              skillIter={i}
+              skillList={skillList}
+            />
+      
+          </div>
+        )})
+      }
 
-        <hr style={{ margin: "20px" }}/>
-        
-        <div>
-          <Button
-            onClick={() => addEmptySkillBlock({ skillList })}
-          >
-            <AddIcon />
-          </Button>
-        </div>
-      {/* </SsIndexContext.Provider> */}
+      <hr style={{ margin: "20px" }}/>
+      <Grid container direction="row" justifyContent="space-between">
+        <Grid item>
+          <Tooltip title="Add new assessment category">
+            <IconButton
+              sx={{ padding: "25px 30px" }}
+              onClick={() => addEmptySkillBlock({ skillList })}
+            >
+              <AddIcon fontSize="large"/>
+            </IconButton>
+          </Tooltip>
+        </Grid>
+        <Grid item>
+          <Tooltip title="Show student results page">
+            <Link
+              href={{
+                pathname: '/Report',
+                // query: { ssId: storedSsDetails.ssId },
+              }}
+            >Report
+            </Link>
+            {/* <IconButton
+              sx={{ padding: "25px 30px" }}
+              onClick={() => addEmptySkillBlock({ skillList })}
+            >
+              <AddIcon fontSize="large"/>
+            </IconButton> */}
+          </Tooltip>
+        </Grid>
+      </Grid>
     </div>
   );
 }

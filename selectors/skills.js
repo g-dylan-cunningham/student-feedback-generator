@@ -20,6 +20,28 @@ const selectSkillsData = createSelector(selectCurrentSsData, ssData => ssData.sk
 const selectCommentsData = createSelector(selectCurrentSsData, ssData => ssData.comments || {});
 // const selectCommentsData = state => state.feedback.comments;
 
+
+const selectReportDetails = createSelector(
+  [
+    selectSkillsData,
+    selectCommentsData,
+  ],
+  (
+    skills,
+    comments
+  ) => {
+    const { byId: skillsById, allIds: skillsAllIds} = skills;
+
+    const res = skillsAllIds.map(skillId => {
+
+      return {
+        finalized: comments.bySkillId[skillId].finalized,
+        skillName: skillsById[skillId].category
+      };
+    })
+    return res;
+  }
+)
 const selectConfiguredSkillsList = createSelector(
   [selectSkillsData],
   (ssSkills) => {
@@ -88,6 +110,7 @@ const selectSkillInfo = createSelector(
 
 
 export {
+  selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
   selectAllCommentsForSkill,

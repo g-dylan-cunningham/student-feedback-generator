@@ -10,10 +10,17 @@ import {
 import {
   ContentCopy as ContentCopyIcon,
   Delete as DeleteIcon,
+  UndoSharp as UndoIcon,
 } from '@mui/icons-material';
 import styles from './FinalFeedback.module.css';
-import { selectFinalFeedbackForSkill, selectCurrentStudent } from '../../selectors';
-import { setTextArea } from './reducers/skillListSlice';
+import {
+  selectFinalFeedbackForSkill,
+  selectCurrentStudent,
+} from '../../selectors';
+import {
+  setTextArea,
+  updateSkillsBlockState,
+} from './reducers/skillListSlice';
 
 
 const FinalFeedback = ({ skillIter }) => {
@@ -43,6 +50,18 @@ const FinalFeedback = ({ skillIter }) => {
       skillIter,
       ssId,
     }));
+  }
+
+  const goBackToFeedbackItemBlock = () => {
+    console.log('goBackToFeedbackItemBlock')
+    dispatch(updateSkillsBlockState(
+      {
+        skillId: `skill${skillIter}`,
+        stepName: 'feedbackEditStep',
+        isSubmitted: false,
+        ssId,
+      }
+    ));
   }
 
   return (
@@ -83,7 +102,20 @@ const FinalFeedback = ({ skillIter }) => {
               // alignItems: 'center'
             }}
           >
+            <Tooltip
+              title="Go back to configure each comment"
+            >
+              <IconButton
+                sx={{
+                  margin: '8px 0px'
+                }}
+                onClick={goBackToFeedbackItemBlock}
+              >
+                <UndoIcon color="primary"/>
+              </IconButton>
+            </Tooltip>
             <Typography variant='h5' sx={{ margin: '8px' }}>Student Feedback</Typography>
+
           </div>
 
           {
@@ -96,7 +128,7 @@ const FinalFeedback = ({ skillIter }) => {
                   animation: 'fadeIn 5s'
                 }}
               >
-                <Tooltip>
+                <Tooltip title="Copy Text">
                   <IconButton
                     sx={{
                       margin: '8px 0px'
@@ -107,7 +139,7 @@ const FinalFeedback = ({ skillIter }) => {
                   </IconButton>
                 </Tooltip>
 
-                <Tooltip>
+                <Tooltip title="Clear text">
                   <IconButton
                     sx={{
                       margin: '8px 8px'

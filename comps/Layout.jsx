@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
       <nav>
         <span><Link href='/'>Home</Link>     </span>
         <span><Link href='/MyPage'>MyPage</Link>     </span>
-        <span><Link href='/Test'>Test</Link></span>
+        <span><Link href='/Report'>Report</Link></span>
 
       </nav>
       <CssBaseline />

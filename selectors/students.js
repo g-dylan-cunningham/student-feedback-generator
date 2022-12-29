@@ -36,8 +36,18 @@ const selectSsArrPosition = createSelector(
     return {
       isNextSs: ssIndex + 1 !== ssList.length,
       isPreviousSs: ssIndex !== 0,
+      totalSs: ssList.length,
+      ssIndex,
     }
   }
+);
+
+const selectStudentById = createSelector(
+  [
+    selectStudentsById,
+    (state, currentSsId) => currentSsId
+  ],
+  (ssMap, ssId) => ssMap[ssId]
 )
 
 
@@ -45,4 +55,5 @@ export {
   selectCurrentStudent,
   selectCurrentStudentData,
   selectSsArrPosition,
+  selectStudentById,
 }

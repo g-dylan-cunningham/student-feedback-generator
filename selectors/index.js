@@ -1,4 +1,3 @@
-// import { createSelector } from '@reduxjs/toolkit';
 import {
   selectCategoriesMap,
   selectCategoriesList,
@@ -7,27 +6,21 @@ import {
 } from './app';
 
 import {
+  selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
   selectAllCommentsForSkill,
   selectVisibleCommentsForSkill,  
   selectFinalFeedbackForSkill,
   selectSkillInfo,
-  // selectSkillsBlockState,
 } from './skills';
 
 import {
   selectCurrentStudent,
   selectCurrentStudentData,
   selectSsArrPosition,
+  selectStudentById,
 } from './students';
-
-
-
-// const appData = state => state.app;
-// const selectSkillsData = state => state.feedback.skills;
-// const selectCommentsData = state => state.feedback.comments;
-
 
 
 export {
@@ -38,6 +31,7 @@ export {
   selectIsEditMode,
 
   // skills
+  selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
   selectAllCommentsForSkill,
@@ -49,6 +43,6 @@ export {
   selectCurrentStudent,
   selectCurrentStudentData,
   selectSsArrPosition,
-
+  selectStudentById,
 
 }

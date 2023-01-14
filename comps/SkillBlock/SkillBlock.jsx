@@ -43,7 +43,7 @@ const SkillBlock = ({
   const getComments = (skillI) => {
     dispatch(deleteSingleSkillComments({ ssId, skillIter: skillI }));
     const fetchData = async () => {
-      const data = await fetch('http://localhost:3000/base/api/verbiage',
+      const data = await fetch('http://localhost:3000/api/verbiage',
         {
           method: 'POST',
           body: JSON.stringify({

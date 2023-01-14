@@ -1,9 +1,62 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selectCurrentStudent } from './students';
+import { selectCurrentStudent, selectAllStudentsList } from './students';
 
 // const selectSsId = state => state.student.byId.ssId;
 const selectFeedback = state => state.feedback;
+const selectStudent = state => state.student;
 
+const selectAllSsReportInfo = createSelector(
+  [
+    selectAllStudentsList,
+    selectFeedback,
+    selectStudent,
+  ],
+  (ssList, feedbackData, studentData) => {
+    return ssList.map(({ssId}) => {
+      const feedback = feedbackData.bySsId[ssId];
+      const student = studentData.byId[ssId];
+      return {
+        ssName: student.firstName + " " + student.lastName,
+        ssId,
+        skills: feedback.skills.allIds.map(skillId => {
+          const { category, rating } = feedback.skills.byId[skillId];
+          const { finalized } = feedback.comments.bySkillId[skillId];
+          return {
+            category,
+            skillId,
+            rating,
+            finalized,
+          }
+        })
+      }
+    });
+  }
+);
+
+const selectCurrentSsReportInfo = ( // delete?
+  [
+    selectAllSsReportInfo,
+    selectCurrentStudent,
+  ],
+  (reportInfo, currentStudent) => {
+    const idx = (currentStudent && currentStudent.ssIdx) || 0;
+    return reportInfo[idx];
+  }
+);
+
+const selectDataBySs = createSelector(
+  [
+    (state, ssId) => ssId,
+    selectFeedback,
+    selectStudent,
+  ],
+  (ssId, feedback, student) => {
+    return {
+      feedback: feedback.bySsId[ssId] || {},
+      student: student.byId[ssId] || {},
+    };
+  }
+);
 
 const selectCurrentSsData = createSelector(
   [
@@ -14,14 +67,12 @@ const selectCurrentSsData = createSelector(
   return feedback.bySsId[curSs.ssId] || {};
 });
 
-
-
 const selectSkillsData = createSelector(selectCurrentSsData, ssData => ssData.skills || {});
 const selectCommentsData = createSelector(selectCurrentSsData, ssData => ssData.comments || {});
 // const selectCommentsData = state => state.feedback.comments;
 
 
-const selectReportDetails = createSelector(
+const selectReportDetails = createSelector( // for current student
   [
     selectSkillsData,
     selectCommentsData,
@@ -41,7 +92,8 @@ const selectReportDetails = createSelector(
     })
     return res;
   }
-)
+);
+
 const selectConfiguredSkillsList = createSelector(
   [selectSkillsData],
   (ssSkills) => {
@@ -110,6 +162,8 @@ const selectSkillInfo = createSelector(
 
 
 export {
+  selectAllSsReportInfo,
+  selectCurrentSsReportInfo,
   selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
@@ -117,5 +171,4 @@ export {
   selectVisibleCommentsForSkill,  
   selectFinalFeedbackForSkill,
   selectSkillInfo,
-  // selectSkillsBlockState,
 };

@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { pronounMap } from './config';
 import genericCopy from './copy/genericCategory';
 

@@ -6,6 +6,8 @@ import {
 } from './app';
 
 import {
+  selectAllSsReportInfo,
+  selectCurrentSsReportInfo,
   selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
@@ -20,6 +22,7 @@ import {
   selectCurrentStudentData,
   selectSsArrPosition,
   selectStudentById,
+  selectAllStudentsList,
 } from './students';
 
 
@@ -31,6 +34,8 @@ export {
   selectIsEditMode,
 
   // skills
+  selectAllSsReportInfo,
+  selectCurrentSsReportInfo,
   selectReportDetails,
   selectConfiguredSkillsList,
   selectOrderedSkills,
@@ -44,5 +49,5 @@ export {
   selectCurrentStudentData,
   selectSsArrPosition,
   selectStudentById,
-
+  selectAllStudentsList,
 }

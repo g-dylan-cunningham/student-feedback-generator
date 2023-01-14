@@ -4,7 +4,7 @@ const nextConfig = {
   env: {
     customKey: 'my-value',
   },
-  basePath: '/base',
+  // basePath: '/base',
 }
 
 module.exports = nextConfig

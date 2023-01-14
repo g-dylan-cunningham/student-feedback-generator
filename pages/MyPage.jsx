@@ -88,12 +88,6 @@ const MyPage = () => {
               }}
             >Report
             </Link>
-            {/* <IconButton
-              sx={{ padding: "25px 30px" }}
-              onClick={() => addEmptySkillBlock({ skillList })}
-            >
-              <AddIcon fontSize="large"/>
-            </IconButton> */}
           </Tooltip>
         </Grid>
       </Grid>

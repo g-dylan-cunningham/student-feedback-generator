@@ -58,13 +58,6 @@ const selectIsEditMode = createSelector(
   ssDetails => ssDetails.isEditMode || false
 );
 
-
-// const selectCurrentSsData = createSelector([
-//   selectCurrentStudent, selectFeedback
-// ], (curSs, feedback) => {
-//   return feedback.bySsId[curSs.ssId] || {};
-// });
-
 export {
   selectCategoriesMap,
   selectCategoriesList,

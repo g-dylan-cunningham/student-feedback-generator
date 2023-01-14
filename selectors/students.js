@@ -48,6 +48,15 @@ const selectStudentById = createSelector(
     (state, currentSsId) => currentSsId
   ],
   (ssMap, ssId) => ssMap[ssId]
+);
+
+const selectAllStudentsList = createSelector(
+  [
+    selectStudentsAllIds,
+    selectStudentsById,
+  ], (allIds, byId) => {
+    return allIds.map(id => byId[id]);
+  } 
 )
 
 
@@ -56,4 +65,5 @@ export {
   selectCurrentStudentData,
   selectSsArrPosition,
   selectStudentById,
+  selectAllStudentsList,
 }

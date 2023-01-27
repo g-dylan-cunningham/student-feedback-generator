@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { v4 as uuid } from 'uuid';
-import { pronounMap } from './config';
-import genericCopy from './copy/genericCategory';
+import copy from './copy';
+import { getSsDetails } from './utils';
 
 export default function handler(req, res) {
   const {
@@ -31,64 +31,65 @@ export default function handler(req, res) {
       namePreference,
       'honorific',honorific,
       voice
-  )
-
-
-  const ss = pronounMap[gender]; // assemble all the pronouns, will add name also later
-
-  const getName = ({gender, firstName, lastName, namePreference, voice}) => {
-    if (voice === 'firstPerson') {
-      return 'you';
-    }
-    if (namePreference === 'mixed') {
-      const oneOrZero = (Math.random()>0.6)? 1 : 0;
-      namePreference = ['firstName', 'lastName'][oneOrZero]
-    }
-    if (firstName && namePreference === 'firstName') {
-      return firstName;
-    }
-    if (lastName && namePreference === 'lastName') {
-        let honorificStr;
-        if (honorific) {
-          honorificStr = honorific + ' ';
-        } else {
-          honorificStr = '';
-        }
-        return honorificStr + lastName;
-    }
-    if (lastName && namePreference === 'lastName') {
-      return lastName;
-    }
-    return 'nameNotConfiguredProperly';
-  }
-  ss['name'] = getName({gender, firstName, lastName, namePreference, voice}); // add preferred name to pronouns
-  
-  // console.log(      
-  //   'server studentd', ss
-  // );
+  );
 
   const params = {
     rating,
     ageGroup,
     category,
-    ss
-  }
+    ss: getSsDetails({gender, firstName, lastName, namePreference, voice})
+  };
 
+  // We want to assemble an array of functions that will allow us to arrive the sentence attribute in
+  // the response. Because there are so many categories, age groups, and ratings, there may not be 
+  // sufficient comments in each sub sub category, so we we also include the generic comments after the 
+  // custom sub sub category comments. 
 
+  let configuredCategoriesArr = [];
+  let genericCategoryArr = [];
+
+  if (copy[category] && copy[category][ageGroup]) {
+    configuredCategoriesArr = copy[category][ageGroup][rating].map((getSentence, i) => {
+      return {
+        getSentence,
+        commentType: 'custom',
+        category,
+        ageGroup,
+        rating,
+        commentIter: i,
+      };
+    });
+  } 
   
-  const arr = genericCopy[ageGroup][rating];
-
-  const response = arr.map((getSentence, serverIter) => { // response is an array of functions
+  if (configuredCategoriesArr.length < 6) {
+    genericCategoryArr = copy['generic'][ageGroup][rating].map((getSentence, i) => {
+      return {
+        getSentence,
+        commentType: 'generic',
+        category,
+        ageGroup,
+        rating,
+        commentIter: i,
+      };
+    });
+  }
+  
+  const response = [
+    ...configuredCategoriesArr,
+    ...genericCategoryArr
+  ].map((comment, serverIter) => { // response is an array of functions
     return {
-      serverIter,
-      sentence: getSentence(params),
+      serverIter, // can we delete?
+      sentence: comment.getSentence(params),
+      commentType: comment.commentType,
+      category: comment.category,
+      ageGroup: comment.ageGroup,
+      rating: comment.rating,
+      commentIter: comment.commentIter,
       commentId: uuid(),
       isVisible: serverIter < 5,
     };
   })
 
-
-
-
-  res.status(200).json({ copy: response })
+  res.status(200).json({ copy: response });
 }

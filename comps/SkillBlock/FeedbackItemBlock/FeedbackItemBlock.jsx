@@ -70,65 +70,67 @@ const FeedbackItemBlock = ({
 
 
   return (
-    <Box
-      sx={{
-        '& .MuiTextField-root': {
-          m: 1, width: '25ch',
-        },
-      }}
-    >
-    <Grid container direction="column">
-      <Grid item>
-        {
-          visibleComments.map((elem, i) => {
-            return  (
-              <div
-                key={i}
-                onDragStart={(e) => dragItem.current=elem.commentId}  //  {(e) => onDragStart(e, i)}
-                onDragEnter={(e) => dragOverItem.current=elem.commentId} // {(e) => onDragEnter(e, i)}
-                onDragEnd={handleSort}
-                onDragOver={(e) => e.preventDefault()}
-              >
-                <Sentence
-                  elem={elem}
-                  skillIter={skillIter}
-                />
-              </div>
-            );
-          })
-        }
-      </Grid>
-      <Grid item>
-        <Grid container direction="row" id="feedbackItemBlockButtonContainer" spacing={3}
-          sx={{
-            justifyContent: 'flex-end',
-            padding: '15px',
-          }}
-        >
+    <div id="feedback-item-block-container">
+      <Box
+        sx={{
+          '& .MuiTextField-root': {
+            m: 1, width: '25ch',
+          },
+        }}
+      >
+      <Grid container direction="column">
+        <Grid item>
           {
-            comments.length > visibleComments.length && (
-              <Grid item>
-                <Button
-                  variant="text"
-                  onClick={handleShowMoreCommentsClick}
-                >Show More</Button>
-              </Grid>
-            )
-          }
-          {
-            visibleComments.length && (
-              <Grid item>
-                <Button
-                  variant="contained"
-                  onClick={handleFinalizeCommentsClick}
-                >Get Text</Button>
-              </Grid>
-            )
+            visibleComments.map((elem, i) => {
+              return  (
+                <div
+                  key={i}
+                  onDragStart={(e) => dragItem.current=elem.commentId}  //  {(e) => onDragStart(e, i)}
+                  onDragEnter={(e) => dragOverItem.current=elem.commentId} // {(e) => onDragEnter(e, i)}
+                  onDragEnd={handleSort}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <Sentence
+                    elem={elem}
+                    skillIter={skillIter}
+                  />
+                </div>
+              );
+            })
           }
         </Grid>
-      </Grid>
-      </Grid>
-    </Box>
+        <Grid item>
+          <Grid container direction="row" id="feedbackItemBlockButtonContainer" spacing={3}
+            sx={{
+              justifyContent: 'flex-end',
+              padding: '15px',
+            }}
+          >
+            {
+              comments.length > visibleComments.length && (
+                <Grid item>
+                  <Button
+                    variant="text"
+                    onClick={handleShowMoreCommentsClick}
+                  >Show More</Button>
+                </Grid>
+              )
+            }
+            {
+              visibleComments.length && (
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={handleFinalizeCommentsClick}
+                  >Get Text</Button>
+                </Grid>
+              )
+            }
+          </Grid>
+        </Grid>
+        </Grid>
+      </Box>
+    </div>
   )
 }
 

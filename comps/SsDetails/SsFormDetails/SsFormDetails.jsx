@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import { 
+  Box,
+  TextField,
+  Grid,
+  FormControl,
+  Stack,
+  Button,
+  Typography,
+} from '@mui/material';
 import styles from '../StudentDetails.module.css';
-import { Typography } from '@mui/material';
-import { updateStudent } from '../../../comps/SsDetails/reducers/studentDetailsSlice';
+import {
+  updateStudent,
+} from '../../../comps/SsDetails/reducers/studentDetailsSlice';
 import {
   selectCurrentStudentData,
-  // selectCurrentStudent,
+  selectCurrentClass,
 } from '../../../selectors';
 import {
   deleteStudentById,
@@ -31,10 +31,11 @@ import VoiceSelector from './VoiceSelector';
 const SsFormDetails = ({
 }) => {
   const dispatch = useDispatch();
-  const storedSsDetails = useSelector(selectCurrentStudentData);
+  const currentSs = useSelector(selectCurrentStudentData);
+  const currentClass = useSelector(selectCurrentClass);
   const [nameFields, setNameFields] = useState({ // used to derive if button is disabled
-    firstName: storedSsDetails && storedSsDetails.firstName,
-    lastName: storedSsDetails && storedSsDetails.lastName
+    firstName: currentSs && currentSs.firstName,
+    lastName: currentSs && currentSs.lastName
   });
   const handleSetNameFields = (e) => {
     setNameFields({...nameFields, ...{ [e.target.name]: e.target.value}})
@@ -56,7 +57,8 @@ const SsFormDetails = ({
       namePreference, // firstName, lastName, mixed
       voice, // firstPerson, thirdPerson
       honorific,  // Mr. Ms etc
-      ssId: storedSsDetails.ssId
+      ssId: currentSs.ssId,
+      classId: currentClass
     }));
 
     // setStudentDetails(storedObj);
@@ -64,7 +66,7 @@ const SsFormDetails = ({
   };
 
   const handleDeleteButtonClick = () => {
-    dispatch(deleteStudentById({ssId: storedSsDetails.ssId}))
+    dispatch(deleteStudentById({ssId: currentSs.ssId}))
   }
 
   return (
@@ -91,7 +93,7 @@ const SsFormDetails = ({
             name="student-details"
             onChange={handleSetNameFields}
           >
-            <Grid container spacing={10} columns={{ xs: 2, md: 12 }}>
+            <Grid container spacing={5} columns={{ xs: 2, md: 12 }}>
               <Grid item xs={12} md={4}>
                 <div className={styles.nameTextInputWrapper}>
                   <TextField
@@ -99,7 +101,7 @@ const SsFormDetails = ({
                     name="firstName"
                     label="First Name"
                     variant="outlined"
-                    defaultValue={storedSsDetails && storedSsDetails.firstName}
+                    defaultValue={currentSs && currentSs.firstName}
                     className={styles.nameTextInput}
                     required
                   />
@@ -108,41 +110,48 @@ const SsFormDetails = ({
                     name="lastName"
                     label="Last Name"
                     variant="outlined"
-                    defaultValue={storedSsDetails && storedSsDetails.lastName}
+                    defaultValue={currentSs && currentSs.lastName}
                     className={styles.nameTextInput}
                     required
                   />
                 </div>
               </Grid>
-              <Grid item xs={12} md={6}
+              <Grid item xs={12} md={7}
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'space-around',
                 }}
               >
-                <Grid container spacing={10} columns={{ xs: 4, md: 12 }}>
-                  <Grid item xs={6} md={3}>
-                    <GenderSelector
-                      currentGender={storedSsDetails && storedSsDetails.gender}
-                      // setGenderField={setGenderField}
-                      // genderField={genderField}
-                    />
+                <Grid container spacing={1}>
+                  <Grid item xs={12} md={6} id="genderAndAgeContainer">
+
+                    <Grid container direction='row'>
+
+                      <Grid item xs={6} sm={6} md={6}>
+                        <GenderSelector currentGender={currentSs && currentSs.gender} />
+                      </Grid>
+
+                      <Grid item xs={6} sm={6} md={6}>
+                        <AgeSelector currentAge={currentSs && currentSs.ageGroup} />
+                      </Grid>
+
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6} md={3}>
-                    <AgeSelector currentAge={storedSsDetails && storedSsDetails.ageGroup}/>
-                  </Grid>
+
+
+
                   <Grid item xs={12} md={6}>
                     <VoiceSelector
                       namePref={namePref}
                       nameFields={nameFields}
                       setNamePref={setNamePref}
-                      storedSsDetails={storedSsDetails}
+                      currentSs={currentSs}
                     />
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={1}>
                 <Stack
                   direction="row"
                   justifyContent="flex-end"

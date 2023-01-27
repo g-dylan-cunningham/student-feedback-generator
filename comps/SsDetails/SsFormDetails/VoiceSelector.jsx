@@ -16,7 +16,7 @@ import {
 const VoiceSelector = ({
   namePref,
   setNamePref,
-  storedSsDetails = {},
+  currentSs = {},
   nameFields,
 }) => {
 
@@ -25,7 +25,7 @@ const VoiceSelector = ({
     namePreference: currentNamePref,
     voice: currentVoice = 'thirdPerson',
     gender: currentGender
-  } = storedSsDetails;
+  } = currentSs;
 
   const derivedCurrentHonorific = useMemo(() => {
     if (currentHonorific) return currentHonorific;
@@ -170,7 +170,7 @@ const VoiceSelector = ({
     {
       selectedVoice === 'thirdPerson' && <ThirdPersonCheckboxes />
     }
-</Grid>
+  </Grid>
     
   )
 };

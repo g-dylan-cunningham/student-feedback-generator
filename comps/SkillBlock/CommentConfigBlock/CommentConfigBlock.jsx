@@ -59,11 +59,11 @@ export default ({
   }
 
   return (
-    <div>
+    <div id="comment-config-block-container">
       {
         category !== ''
         ? (
-          <Grid container spacing={2} direction="column">
+          <Grid container spacing={2} direction="column" id="comment-config-block-selected-category-container">
             <Grid item xs={12} sx={{ }}>
               <Grid container spacing={2} direction="row" sx={{display:'relative'}}>
                 <Grid item sx={{width: "90%"}}>
@@ -120,7 +120,7 @@ export default ({
             </Grid>
           </Grid>
         ) : (
-          <div>
+          <div id="comment-config-block-unselected-category-container">
             <CategorySelector
               selectedCategory={category}
               skillIter={skillIter}

@@ -60,7 +60,7 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider />
       {pages.map(({title, href}) => (
-          <ActiveLink title={title} href={href} customStyle={{ color: 'black' }}/>
+          <ActiveLink key={title} title={title} href={href} customStyle={{ color: 'black' }}/>
         ))}
     </Box>
   );
@@ -83,7 +83,7 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ fontSize: '1.5em', flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            REPORT GENERATOR
+            FedBack
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {/* {navItems.map((item) => (

@@ -6,9 +6,9 @@ const initialState = {
   currentIndex: 0,
   byId: {
     [initialSsId]: {
-      gender: 'male',
-      firstName: 'Byson',
-      lastName: 'Cunningham',
+      // gender: 'male',
+      // firstName: 'Byson',
+      // lastName: 'Cunningham',
       ssId: initialSsId,
     }
   },
@@ -44,6 +44,11 @@ export const detailsSlice = createSlice({
       const { payload } = action;
       const { indexShift } = payload;
       state.currentIndex = state.currentIndex + indexShift;
+    },
+    updateCurrentSsIndexWithSsId: (state, action) => {
+      const { payload } = action;
+      const { ssId } = payload;
+      state.currentIndex = state.allIds.indexOf(ssId);
     }
   },
 })
@@ -54,6 +59,7 @@ export const {
   addStudent,
   deleteStudent,
   updateCurrentSsIndex,
+  updateCurrentSsIndexWithSsId,
 } = detailsSlice.actions
 
 export default detailsSlice.reducer

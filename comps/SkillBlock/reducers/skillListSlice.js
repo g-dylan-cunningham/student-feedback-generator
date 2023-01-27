@@ -93,17 +93,28 @@ export const detailsSlice = createSlice({
       const { skillId, rating, ssId } = payload;
       state.bySsId[ssId].skills.byId[skillId] = { ...state.bySsId[ssId].skills.byId[skillId], rating };
     },
+    addComment: (state, action) => {
+      const { payload } = action;
+      const { comment, ssId, skillId } = payload;
+      const {
+        commentId,
+      } = comment;
+      state.bySsId[ssId].comments.bySkillId[skillId].byCommentId[commentId] = {
+        ...comment
+      };
+    },
     addComments: (state, action) => { // Array: comments (supports one or multiple)
       const { payload } = action;
       const { comments, ssId } = payload;
       try {
         for (let i = 0; i < comments.length; i++) {
-          const { commentId, skillId, sentence, sentenceIter, isVisible } = comments[i];
-          state.bySsId[ssId].comments.bySkillId[skillId].byCommentId[commentId] = {
-            sentence: sentence,
-            sentenceIter,
+
+          const {
             commentId,
-            isVisible, 
+            skillId,
+          } = comments[i];
+          state.bySsId[ssId].comments.bySkillId[skillId].byCommentId[commentId] = {
+            ...comments[i]
           };
           state.bySsId[ssId].comments.bySkillId[skillId].allIds.push(commentId);
         }
@@ -225,6 +236,7 @@ export const {
   copySkills,
   updateSkillCategory,
   updateSkillRating,
+  addComment,
   addComments,
   deleteComment,
   deleteSingleSkillComments,

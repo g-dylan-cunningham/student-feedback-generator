@@ -55,11 +55,9 @@ const SkillBlock = ({
       );
       const { copy } = await data.json();
       const enhancedCopy = copy.map((item, i) => {
-        // console.log('item', item)
         return {
           ...item,
           skillId: `skill${skillIter}`,
-          sentenceIter: i // this could cause problems
         }
       })
       dispatch(addComments({
@@ -86,14 +84,12 @@ const SkillBlock = ({
     }
   }
 
-
-
   return (
     <div>
       <hr style={{ margin: "20px" }}/>
       <Grid container spacing={0} direction="row" style={{ margin: "0px", padding: "0px 20px" }}>
 
-        <Grid item xs={2}>          
+        <Grid item xs={12} md={2}>          
           {true && <CommentConfigBlock
               skillIter={skillIter}
               getComments={getComments}
@@ -102,7 +98,7 @@ const SkillBlock = ({
 
         
         {configStep.submitted && !feedbackEditStep.submitted && (
-          <Grid item xs={10}>
+          <Grid item xs={12} md={10}>
             <FeedbackItemBlock
               // setCopy={setThisSkillCopy}
               skillIter={skillIter}
@@ -113,7 +109,7 @@ const SkillBlock = ({
 
         
         {configStep.submitted && feedbackEditStep.submitted && (
-          <Grid item xs={10}>
+          <Grid item xs={12} md={10}>
             <FinalFeedback
               skillIter={skillIter}
             />
